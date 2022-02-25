@@ -1,27 +1,30 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Context as BasketContext } from '../context/BasketContext';
 import './Product.css';
 
-const Product = ({ id, title, image, price, rating }) => {
+const Product = ({ product }) => {
+  const { addToBasket } = useContext(BasketContext);
+
   return (
     <div className="product">
       <div className="product__info">
-        <p>{title}</p>
+        <p>{product.title}</p>
         <p className="product__price">
           <small>$</small>
-          <strong>{price}</strong>
+          <strong>{product.price}</strong>
         </p>
         <div className="product__rating">
-          {Array(rating)
+          {Array(product.rating)
             .fill()
             .map((_, i) => (
-              <p>🌟</p>
+              <p key={i}>🌟</p>
             ))}
         </div>
       </div>
 
-      <img src={image} alt="" />
+      <img src={product.image} alt="" />
 
-      <button>Add to Basket</button>
+      <button onClick={() => addToBasket({ product })}>Add to Basket</button>
     </div>
   );
 };
