@@ -8,8 +8,11 @@ const Subtotal = () => {
     state: { basket }
   } = useContext(BasketContext);
 
-  const getBasketTotal = (basketItem) => {
-    basketItem?.reduce((amount, item) => item.price + amount, 0);
+  const getBasketTotal = (basketItems) => {
+    if (!basketItems) {
+      return 0;
+    }
+    return basketItems.reduce((amount, item) => item.price + amount, 0);
   };
 
   return (

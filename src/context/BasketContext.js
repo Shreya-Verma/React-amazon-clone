@@ -1,18 +1,17 @@
 import createDataContext from './createDataContext';
 import { ADD_TO_BASKET, EMPTY_BASKET, REMOVE_FROM_BASKET } from './action';
-const basket = [];
 
-const basketReducer = (state = [], action) => {
+const basketReducer = (state, action) => {
   switch (action.type) {
     case ADD_TO_BASKET:
-      return [...state, action.payload];
+      return { ...state, basket: [...state.basket, action.payload] };
     case EMPTY_BASKET:
-      return [];
+      return { basket: [] };
     case REMOVE_FROM_BASKET:
-      const index = state.findIndex(
+      const index = state.basket.findIndex(
         (basketItem) => basketItem.id === action.payload
       );
-      let newBasket = [...state];
+      let newBasket = [...state.basket];
 
       if (index >= 0) {
         newBasket.splice(index, 1);
@@ -21,7 +20,7 @@ const basketReducer = (state = [], action) => {
           `Cant remove product (id: ${action.payload}) as its not in basket!`
         );
       }
-      return newBasket;
+      return { ...state, basket: newBasket };
 
     default:
       return state;
@@ -38,8 +37,17 @@ const addToBasket =
     });
   };
 
+const removeFromBasket =
+  (dispatch) =>
+  ({ id }) => {
+    dispatch({
+      type: REMOVE_FROM_BASKET,
+      payload: id
+    });
+  };
+
 export const { Context, Provider } = createDataContext(
   basketReducer,
-  { addToBasket },
-  basket
+  { addToBasket, removeFromBasket },
+  { basket: [] }
 );
