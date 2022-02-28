@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
+import { useBasket } from '../context/context';
 import './CheckoutProduct.css';
-import { Context as BasketContext } from '../context/BasketContext';
 
 const CheckoutProduct = ({ product }) => {
-  const { removeFromBasket } = useContext(BasketContext);
+  const { removeFromBasket } = useBasket();
   return (
     <div className="checkoutProduct">
       <img src={product.image} alt="" className="checkoutProduct__image" />

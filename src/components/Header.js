@@ -1,15 +1,14 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import './Header.css';
 import logo from '../assets/amazon_logo_white.png';
 import SearchIcon from '@material-ui/icons/Search';
 import { ShoppingBasket } from '@material-ui/icons';
-import { Context as BasketContext } from '../context/BasketContext';
+import { useBasket } from '../context/context';
 
 const Header = () => {
   const {
     state: { basket }
-  } = useContext(BasketContext);
+  } = useBasket();
 
   return (
     <div className="header">

@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
+import { useBasket } from '../context/context';
 import './Subtotal.css';
 import CurrencyFormat from 'react-currency-format';
-import { Context as BasketContext } from '../context/BasketContext';
 
 const Subtotal = () => {
   const {
     state: { basket }
-  } = useContext(BasketContext);
+  } = useBasket();
 
   const getBasketTotal = (basketItems) => {
     if (!basketItems) {

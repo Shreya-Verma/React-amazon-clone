@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
-import { Context as BasketContext } from '../context/BasketContext';
+import { useBasket } from '../context/context';
 import './Product.css';
 
 const Product = ({ product }) => {
-  const { addToBasket } = useContext(BasketContext);
+  const { addToBasket } = useBasket();
 
   return (
     <div className="product">

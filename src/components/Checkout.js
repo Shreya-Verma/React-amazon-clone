@@ -1,13 +1,13 @@
-import React, { useContext } from 'react';
+import { useBasket } from '../context/context';
 import './Checkout.css';
 import Subtotal from './Subtotal';
-import { Context as BasketContext } from '../context/BasketContext';
+
 import CheckoutProduct from './CheckoutProduct';
 
 const Checkout = () => {
   const {
     state: { basket }
-  } = useContext(BasketContext);
+  } = useBasket();
   return (
     <div className="checkout">
       <div className="checkout__left">

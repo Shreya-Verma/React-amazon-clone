@@ -1,13 +1,31 @@
-import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/amazon-logo-black.jpeg';
-import { Context as AuthContext } from '../context/AuthContext';
+import { useAuth } from '../context/context';
 import './Login.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { signIn, register } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const {
+    state: { authData, errorMessage },
+    signIn,
+    signUp
+  } = useAuth();
+
+  const login = (e) => {
+    e.preventDefault();
+    signIn({ email: email, password: password });
+    if (authData.token) {
+      navigate('/');
+    }
+  };
+
+  const register = async (e) => {
+    e.preventDefault();
+    signUp({ email: email, password: password });
+  };
 
   return (
     <div className="login">
@@ -35,7 +53,7 @@ const Login = () => {
 
           <button
             type="submit"
-            onClick={() => signIn({ email, password })}
+            onClick={(e) => login(e)}
             className="login__signInButton"
           >
             Sign In
@@ -48,10 +66,7 @@ const Login = () => {
           Interest-Based Ads Notice.
         </p>
 
-        <button
-          onClick={() => register({ email, password })}
-          className="login__registerButton"
-        >
+        <button onClick={(e) => register(e)} className="login__registerButton">
           Create your Amazon Account
         </button>
       </div>
