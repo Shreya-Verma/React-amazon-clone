@@ -7,6 +7,7 @@ import './Login.css';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const navigate = useNavigate();
   const {
     state: { authData, errorMessage },
@@ -16,15 +17,26 @@ const Login = () => {
 
   const login = (e) => {
     e.preventDefault();
+
     signIn({ email: email, password: password });
-    if (authData.token) {
+
+    if (authData) {
       navigate('/');
+    } else if (errorMessage !== null || errorMessage !== '') {
+      //show error
     }
   };
 
   const register = async (e) => {
     e.preventDefault();
+
     signUp({ email: email, password: password });
+
+    if (authData) {
+      navigate('/');
+    } else if (errorMessage !== null || errorMessage !== '') {
+      //show error
+    }
   };
 
   return (

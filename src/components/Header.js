@@ -1,14 +1,24 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Header.css';
 import logo from '../assets/amazon_logo_white.png';
 import SearchIcon from '@material-ui/icons/Search';
 import { ShoppingBasket } from '@material-ui/icons';
-import { useBasket } from '../context/context';
+import { useAuth, useBasket } from '../context/context';
 
 const Header = () => {
   const {
     state: { basket }
   } = useBasket();
+  const {
+    state: { authData },
+    signout
+  } = useAuth();
+
+  const handleAuthentication = () => {
+    if (!authData) {
+      signout();
+    }
+  };
 
   return (
     <div className="header">
@@ -21,9 +31,13 @@ const Header = () => {
       </div>
       <div className="header__nav">
         <Link to="/login">
-          <div className="header__option">
-            <span className="header__optionLineOne">Hello Guest</span>
-            <span className="header__optionLineTwo">Sign In</span>
+          <div onClick={handleAuthentication} className="header__option">
+            <span className="header__optionLineOne">
+              Hello {authData?.email || 'Guest'}
+            </span>
+            <span className="header__optionLineTwo">
+              {authData ? 'Sign Out' : 'Sign In'}
+            </span>
           </div>
         </Link>
         <div className="header__option">

@@ -11,15 +11,12 @@ const authReducer = (state, action) => {
   switch (action.type) {
     case SIGN_IN:
       return {
-        authData: {
-          token: action.payload.accessToken,
-          email: action.payload.email
-        },
+        authData: action.payload,
         errorMessage: ''
       };
     case SIGN_OUT:
       return {
-        authData: { token: null, email: '' },
+        authData: null,
         errorMessage: ''
       };
     case ADD_ERROR:
@@ -42,12 +39,12 @@ const signIn =
   async ({ email, password }) => {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response.user);
+
       if (response.user) {
         dispatch({ type: SIGN_IN, payload: response.user });
       }
     } catch (error) {
-      console.log(error);
+      dispatch({ type: ADD_ERROR, payload: 'Error with login' });
     }
   };
 
@@ -60,22 +57,36 @@ const signUp =
         email,
         password
       );
-      console.log(response);
+
       if (response.user) {
         dispatch({ type: SIGN_IN, payload: response.user });
       }
     } catch (error) {
-      console.log(error);
+      dispatch({ type: ADD_ERROR, payload: 'Error with register' });
     }
   };
 
-const signout = (dispatch) => () => {};
+const signout = (dispatch) => async () => {
+  try {
+    const response = await signOut();
+    if (response) {
+      dispatch({ type: SIGN_OUT });
+    }
+  } catch (error) {
+    dispatch({ type: ADD_ERROR, payload: 'error signing out' });
+  }
+};
+
+const restoreToken = (dispatch) => (data) => {
+  console.log(data);
+  dispatch({ type: SIGN_IN, payload: data });
+};
 
 export const { Context, Provider } = createDataContext(
   authReducer,
-  { signIn, signUp, signout },
+  { signIn, signUp, signout, restoreToken },
   {
-    authData: { token: null, email: '' },
+    authData: null,
     errorMessage: ''
   }
 );
